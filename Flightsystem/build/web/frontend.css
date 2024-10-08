@@ -1,0 +1,208 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 25 Jul 2024, 22:10:59
+    Author     : Krish
+*/
+body { 
+    font-family: Arial, sans-serif; 
+    background-color: #f4f4f4; 
+    background-image: url('images/plane.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; 
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+p { 
+    color: #666; 
+    text-align: center;
+}
+
+.flight {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 20px;
+    background-color: #fff;
+}
+
+#flights4 {
+    margin: 20px;
+    border: 4px solid black; 
+    padding: 8px;
+    text-align: left;
+    background-color: #fff;
+}
+
+form {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    background-color: #fafafa;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #007BFF;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.passenger-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.passenger-group label {
+    width: 48%;
+}
+
+.passenger-group input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin: 5px 0 15px;
+}
+
+.passport-group {
+    margin-bottom: 20px;
+}
+
+.passport-group input[type="text"] {
+    margin-bottom: 5px;
+}
+
+.card-details-group {
+    margin-bottom: 20px;
+}
+
+.card-details-group input[type="password"] {
+    margin-bottom: 5px;
+}
+
+#returnButton {
+    width: auto;
+    margin: 10px auto;
+    background-color: #28a745;
+    color: white;
+    border: 1px solid #218838;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#returnButton:hover {
+    background-color: #218838;
+}
+
+#discountSection {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#discountSection h2 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+#discountSection label {
+    font-weight: bold;
+}
+
+#discountSection input {
+    padding: 5px;
+    font-size: 1em;
+}
+
+#discountSection button {
+    padding: 10px 15px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#discountSection button:hover {
+    background-color: #0056b3;
+}
+
+#discountDetails {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#discountDetails p {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+}
+
+#discountDetails br {
+    margin: 5px 0;
+}

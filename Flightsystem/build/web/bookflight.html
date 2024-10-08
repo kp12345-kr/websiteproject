@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+<head>
+    <title>Flight Information</title>
+    <link rel="stylesheet" type="text/css" href="frontend.css">
+</head>
+<body>
+    <h1>Available Flights</h1>
+    <div id="flights4">
+
+    </div>
+
+    <h2>Book a Flight</h2>
+    <form id="bookingForm">
+        <label for="flightId">Flight ID:</label>
+        <input type="text" id="flightId" name="flightId" required><br><br>
+        
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="adults">Number of Adults:</label>
+        <input type="number" id="adults" name="adults" min="1" value="1" required><br><br>
+        
+        <label for="children">Number of Children:</label>
+        <input type="number" id="children" name="children" min="0" value="0"><br><br>
+        
+        <label for="passport">Passport Number(s):</label>
+        <textarea id="passport" name="passport" placeholder="Enter passport numbers, one per line" required></textarea><br><br>
+        
+        <h3>Payment Information</h3>
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber" required><br><br>
+        
+        <label for="expiryDate">Expiry Date (MM/YY):</label>
+        <input type="text" id="expiryDate" name="expiryDate" required><br><br>
+        
+        <label for="cvv">CVV:</label>
+        <input type="password" id="cvv" name="cvv" pattern="\d{3}" maxlength="3" required title="CVV must be a 3-digit number"><br><br>
+
+        <button type="submit">Book Flight</button>
+    </form>
+    
+    <br>
+    <a href="index.html">Return to Homepage</a>
+
+    <h2>Convert Currency</h2>
+    <select id="currencySelector">
+        <option value="" disabled selected>Select a currency</option>
+        <option value="EUR">EUR</option>
+        <option value="INR">INR</option>
+        <option value="USD">USD</option>
+        <option value="MXN">MXN</option>
+        <option value="JPY">JPY</option>
+        <option value="PKR">PKR</option>
+        <option value="ZAR">ZAR</option>
+        <option value="NPR">NPR</option>
+        <option value="LKR">LKR</option>
+        <option value="GBP">GBP</option>
+    </select>
+    <button id="convertButton">Convert</button>
+
+    <div id="discountSection">
+        <h2>15% Off Discount</h2>
+        <label for="discountFlightId">Flight ID:</label>
+        <input type="text" id="discountFlightId"><br><br>
+        <button id="discountButton">Apply Discount</button>
+        <p id="discountMessage"></p>
+        <div id="discountDetails"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('convertButton').addEventListener('click', function() {
+                const currency = document.getElementById('currencySelector').value;
+                if (currency) {
+                    loadFlights(currency);
+                } else {
+                    alert("Please select a currency first.");
+                }
+            });
+
+            function loadFlights(currency) {
+                fetch(`http://localhost:8080/Flightsystem/webresources/flights4/convert?currency=${currency}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('flights4').innerHTML = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching flight data:', error);
+                    });
+            }
+
+            document.getElementById('bookingForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(event.target);
+
+                fetch('http://localhost:8080/Flightsystem/webresources/booking', {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(formData.entries())),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Booking successful: ' + data.message);
+                })
+                .catch(error => {
+                    console.error('Error booking flight:', error);
+                    alert('Booking failed: ' + error.message);
+                });
+            });
+
+            document.getElementById('discountButton').addEventListener('click', function() {
+                const flightId = document.getElementById('discountFlightId').value;
+                if (flightId) {
+                    applyDiscount(flightId);
+                } else {
+                    alert("Please enter a flight ID first.");
+                }
+            });
+
+            function applyDiscount(flightId) {
+                fetch(`http://localhost:8080/Flightsystem/webresources/booking/discount?flightId=${flightId}&discount=15`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const discountDetailsElement = document.getElementById('discountDetails');
+                        if (discountDetailsElement) {
+                            if (data[0] && data[0].original_price !== undefined && data[0].discounted_price !== undefined) {
+                                const flight = data[0];
+                                const message = `
+                                    Flight ID: ${flight.flight_id}<br>
+                                    Origin City: ${flight.origin_city}<br>
+                                    Destination City: ${flight.destination_city}<br>
+                                    Airline: ${flight.airline}<br>
+                                    Available Seats: ${flight.available_seats}<br>
+                                    Connections: ${flight.connections}<br>
+                                    Original Price: ${flight.original_price.toFixed(2)}<br>
+                                    Discounted Price: ${flight.discounted_price.toFixed(2)}
+                                `;
+                                discountDetailsElement.innerHTML = message;
+                            } else {
+                                throw new Error("Price data is missing in the response.");
+                            }
+                        } else {
+                            console.error('Element with ID "discountDetails" not found.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error applying discount:', error);
+                        alert('Failed to apply discount: ' + error.message);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
